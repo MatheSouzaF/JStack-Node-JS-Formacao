@@ -1,3 +1,4 @@
+const { get } = require("http");
 const users = require("../mocks/users");
 
 module.exports = {
@@ -11,5 +12,18 @@ module.exports = {
     });
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(sortedUsers));
+  },
+
+  getUserById(req, res) {
+    const { id } = req.params;
+
+    const user = users.find((user) => user.id === Number(id));
+    if (!user) {
+      res.writeHead(404, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "User not Find" }));
+    } else {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(user));
+    }
   },
 };
